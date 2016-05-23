@@ -40,18 +40,18 @@ class Zend_Cache_Backend
      *
      * @var array directives
      */
-    protected $_directives = array(
+    protected $_directives = [
         'lifetime' => 3600,
         'logging'  => false,
-        'logger'   => null
-    );
+        'logger'   => null,
+    ];
 
     /**
      * Available options
      *
      * @var array available options
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * Constructor
@@ -60,7 +60,7 @@ class Zend_Cache_Backend
      * @throws Zend_Cache_Exception
      * @return void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (!is_array($options)) {
             Zend_Cache::throwException('Options parameter must be an array');
@@ -79,7 +79,9 @@ class Zend_Cache_Backend
      */
     public function setDirectives($directives)
     {
-        if (!is_array($directives)) Zend_Cache::throwException('Directives parameter must be an array');
+        if (!is_array($directives)) {
+            Zend_Cache::throwException('Directives parameter must be an array');
+        }
         while (list($name, $value) = each($directives)) {
             if (!is_string($name)) {
                 Zend_Cache::throwException("Incorrect option name : $name");
@@ -150,12 +152,12 @@ class Zend_Cache_Backend
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             // windows...
-            foreach (array($_ENV, $_SERVER) as $tab) {
-                foreach (array('TEMP', 'TMP', 'windir', 'SystemRoot') as $key) {
+            foreach ([$_ENV, $_SERVER] as $tab) {
+                foreach (['TEMP', 'TMP', 'windir', 'SystemRoot'] as $key) {
                     if (isset($tab[$key])) {
                         $result = $tab[$key];
                         if (($key == 'windir') or ($key == 'SystemRoot')) {
-                            $result = $result . '\\temp';
+                            $result = $result.'\\temp';
                         }
                         return $result;
                     }
@@ -164,8 +166,12 @@ class Zend_Cache_Backend
             return '\\temp';
         } else {
             // unix...
-            if (isset($_ENV['TMPDIR']))    return $_ENV['TMPDIR'];
-            if (isset($_SERVER['TMPDIR'])) return $_SERVER['TMPDIR'];
+            if (isset($_ENV['TMPDIR'])) {
+                return $_ENV['TMPDIR'];
+            }
+            if (isset($_SERVER['TMPDIR'])) {
+                return $_SERVER['TMPDIR'];
+            }
             return '/tmp';
         }
     }

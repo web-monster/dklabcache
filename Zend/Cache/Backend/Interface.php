@@ -60,13 +60,13 @@ interface Zend_Cache_Backend_Interface
      * Note : $data is always "string" (serialization is done by the
      * core not by the backend)
      *
-     * @param  string $data            Datas to cache
-     * @param  string $id              Cache id
-     * @param  array $tags             Array of strings, the cache record will be tagged by each string entry
-     * @param  int   $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param  string $data             Datas to cache
+     * @param  string $id               Cache id
+     * @param  array  $tags             Array of strings, the cache record will be tagged by each string entry
+     * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
-    public function save($data, $id, $tags = array(), $specificLifetime = false);
+    public function save($data, $id, $tags = [], $specificLifetime = false);
 
     /**
      * Remove a cache record
@@ -91,6 +91,6 @@ interface Zend_Cache_Backend_Interface
      * @param  array  $tags Array of tags
      * @return boolean true if no problem
      */
-    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array());
+    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = []);
 
 }

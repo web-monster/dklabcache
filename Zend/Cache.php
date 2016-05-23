@@ -32,35 +32,35 @@ abstract class Zend_Cache
      *
      * @var array
      */
-    public static $standardFrontends = array('Core', 'Output', 'Class', 'File', 'Function', 'Page');
-    
+    public static $standardFrontends = ['Core', 'Output', 'Class', 'File', 'Function', 'Page'];
+
     /**
      * Standard backends
      *
      * @var array
      */
-    public static $standardBackends = array('File', 'Sqlite', 'Memcached', 'Redis', 'Apc', 'ZendPlatform');
-    
+    public static $standardBackends = ['File', 'Sqlite', 'Memcached', 'Redis', 'Apc', 'ZendPlatform'];
+
     /**
      * Only for backward compatibily (will be removed in 1.2.0)
      *
      * @var array
      */
-    public static $availableFrontends = array('Core', 'Output', 'Class', 'File', 'Function', 'Page');
-    
+    public static $availableFrontends = ['Core', 'Output', 'Class', 'File', 'Function', 'Page'];
+
     /**
      * Only for backward compatibily (will be removed in 1.2.0)
      *
      * @var array
      */
-    public static $availableBackends = array('File', 'Sqlite', 'Memcached', 'Redis', 'Apc', 'ZendPlatform');
-     
+    public static $availableBackends = ['File', 'Sqlite', 'Memcached', 'Redis', 'Apc', 'ZendPlatform'];
+
     /**
      * Consts for clean() method
      */
-    const CLEANING_MODE_ALL              = 'all';
-    const CLEANING_MODE_OLD              = 'old';
-    const CLEANING_MODE_MATCHING_TAG     = 'matchingTag';
+    const CLEANING_MODE_ALL = 'all';
+    const CLEANING_MODE_OLD = 'old';
+    const CLEANING_MODE_MATCHING_TAG = 'matchingTag';
     const CLEANING_MODE_NOT_MATCHING_TAG = 'notMatchingTag';
 
     /**
@@ -73,48 +73,48 @@ abstract class Zend_Cache
      * @throws Zend_Cache_Exception
      * @return Zend_Cache_Frontend
      */
-    public static function factory($frontend, $backend, $frontendOptions = array(), $backendOptions = array())
+    public static function factory($frontend, $backend, $frontendOptions = [], $backendOptions = [])
     {
 
         // because lowercase will fail
         $frontend = self::_normalizeName($frontend);
-        $backend  = self::_normalizeName($backend);
+        $backend = self::_normalizeName($backend);
 
         // working on the frontend
         if (in_array($frontend, self::$availableFrontends)) {
             // we use a standard frontend
             // For perfs reasons, with frontend == 'Core', we can interact with the Core itself
-            $frontendClass = 'Zend_Cache_' . ($frontend != 'Core' ? 'Frontend_' : '') . $frontend;
+            $frontendClass = 'Zend_Cache_'.($frontend != 'Core' ? 'Frontend_' : '').$frontend;
             // For perfs reasons, we do not use the Zend_Loader::loadClass() method
             // (security controls are explicit)
         } else {
             // we use a custom frontend
-            $frontendClass = 'Zend_Cache_Frontend_' . $frontend;
+            $frontendClass = 'Zend_Cache_Frontend_'.$frontend;
             // To avoid security problems in this case, we use Zend_Loader to load the custom class
-            $file = str_replace('_', DIRECTORY_SEPARATOR, $frontendClass) . '.php';
+            $file = str_replace('_', DIRECTORY_SEPARATOR, $frontendClass).'.php';
             if (!(Zend_Loader::isReadable($file))) {
                 self::throwException("file $file not found in include_path");
             }
             Zend_Loader::loadClass($frontendClass);
         }
-        
+
         // working on the backend
         if (in_array($backend, Zend_Cache::$availableBackends)) {
             // we use a standard backend
-            $backendClass = 'Zend_Cache_Backend_' . $backend;
+            $backendClass = 'Zend_Cache_Backend_'.$backend;
             // For perfs reasons, we do not use the Zend_Loader::loadClass() method
             // (security controls are explicit)
         } else {
             // we use a custom backend
-            $backendClass = 'Zend_Cache_Backend_' . $backend;
+            $backendClass = 'Zend_Cache_Backend_'.$backend;
             // To avoid security problems in this case, we use Zend_Loader to load the custom class
-            $file = str_replace('_', DIRECTORY_SEPARATOR, $backendClass) . '.php';
+            $file = str_replace('_', DIRECTORY_SEPARATOR, $backendClass).'.php';
             if (!(Zend_Loader::isReadable($file))) {
                 self::throwException("file $file not found in include_path");
             }
             Zend_Loader::loadClass($backendClass);
         }
-        
+
         // Making objects
         $frontendObject = new $frontendClass($frontendOptions);
         $backendObject = new $backendClass($backendOptions);
@@ -127,7 +127,8 @@ abstract class Zend_Cache
      * Throw an exception
      *
      * Note : for perf reasons, the "load" of Zend/Cache/Exception is dynamic
-     * @param  string $msg  Message for the exception
+     *
+     * @param  string $msg Message for the exception
      * @throws Zend_Cache_Exception
      */
     public static function throwException($msg)
@@ -139,13 +140,13 @@ abstract class Zend_Cache
     /**
      * Normalize frontend and backend names to allow multiple words TitleCased
      *
-     * @param  string $name  Name to normalize
+     * @param  string $name Name to normalize
      * @return string
      */
     protected static function _normalizeName($name)
     {
         $name = ucfirst(strtolower($name));
-        $name = str_replace(array('-', '_', '.'), ' ', $name);
+        $name = str_replace(['-', '_', '.'], ' ', $name);
         $name = ucwords($name);
         $name = str_replace(' ', '', $name);
         return $name;

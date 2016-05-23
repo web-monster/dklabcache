@@ -20,7 +20,6 @@
  */
 
 
-
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
@@ -32,12 +31,12 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
     /**
      * Default Host IP Address or DNS
      */
-    const DEFAULT_HOST       = '127.0.0.1';
+    const DEFAULT_HOST = '127.0.0.1';
 
     /**
      * Default port
      */
-    const DEFAULT_PORT       = 11211;
+    const DEFAULT_PORT = 11211;
 
     /**
      * Persistent
@@ -58,14 +57,16 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      *
      * @var array available options
      */
-    protected $_options = array(
-        'servers' => array(array(
-            'host' => Zend_Cache_Backend_Memcached::DEFAULT_HOST,
-            'port' => Zend_Cache_Backend_Memcached::DEFAULT_PORT,
-            'persistent' => Zend_Cache_Backend_Memcached::DEFAULT_PERSISTENT
-        )),
-        'compression' => false
-    );
+    protected $_options = [
+        'servers'     => [
+            [
+                'host'       => Zend_Cache_Backend_Memcached::DEFAULT_HOST,
+                'port'       => Zend_Cache_Backend_Memcached::DEFAULT_PORT,
+                'persistent' => Zend_Cache_Backend_Memcached::DEFAULT_PERSISTENT,
+            ],
+        ],
+        'compression' => false,
+    ];
 
     /**
      * Memcache object
@@ -81,17 +82,17 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      * @throws Zend_Cache_Exception
      * @return void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (!extension_loaded('memcache')) {
             Zend_Cache::throwException('The memcache extension must be loaded for using this backend !');
         }
         parent::__construct($options);
         if (isset($this->_options['servers'])) {
-            $value= $this->_options['servers'];
+            $value = $this->_options['servers'];
             if (isset($value['host'])) {
                 // in this case, $value seems to be a simple associative array (one server only)
-                $value = array(0 => $value); // let's transform it into a classical array of associative arrays
+                $value = [0 => $value]; // let's transform it into a classical array of associative arrays
             }
             $this->setOption('servers', $value);
         }
@@ -120,25 +121,25 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
         if ($doNotTestCacheValidity) {
             $this->_log("Zend_Cache_Backend_Memcached::load() : \$doNotTestCacheValidity=true is unsupported by the Memcached backend");
         }
-        
+
         $tmp = $this->_memcache->get($id);
         if (is_array($id)) {
-        	if (is_array($tmp)) {
-        		$aDataReturn=array();
-        		foreach ($tmp as $key => $data) {
-        			if (is_array($data)) {
-            			$aDataReturn[$key]=$data[0];
-        			}
-        		}
-        		if (count($aDataReturn)>0) {
-        			return $aDataReturn;
-        		}
-        	}        	
+            if (is_array($tmp)) {
+                $aDataReturn = [];
+                foreach ($tmp as $key => $data) {
+                    if (is_array($data)) {
+                        $aDataReturn[$key] = $data[0];
+                    }
+                }
+                if (count($aDataReturn) > 0) {
+                    return $aDataReturn;
+                }
+            }
         } else {
-        	if (is_array($tmp)) {
-            	return $tmp[0];
-        	}	
-        }        
+            if (is_array($tmp)) {
+                return $tmp[0];
+            }
+        }
         return false;
     }
 
@@ -169,7 +170,7 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean True if no problem
      */
-    public function save($data, $id, $tags = array(), $specificLifetime = false)
+    public function save($data, $id, $tags = [], $specificLifetime = false)
     {
         $lifetime = $this->getLifetime($specificLifetime);
         if ($this->_options['compression']) {
@@ -177,7 +178,7 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
         } else {
             $flag = 0;
         }
-        $result = $this->_memcache->set($id, array($data, time()), $flag, $lifetime);
+        $result = $this->_memcache->set($id, [$data, time()], $flag, $lifetime);
         if (count($tags) > 0) {
             $this->_log("Zend_Cache_Backend_Memcached::save() : tags are unsupported by the Memcached backend");
         }
@@ -210,18 +211,18 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      * @param  array  $tags Array of tags
      * @return boolean True if no problem
      */
-    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
+    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
     {
-        if ($mode==Zend_Cache::CLEANING_MODE_ALL) {
+        if ($mode == Zend_Cache::CLEANING_MODE_ALL) {
             return $this->_memcache->flush();
         }
-        if ($mode==Zend_Cache::CLEANING_MODE_OLD) {
+        if ($mode == Zend_Cache::CLEANING_MODE_OLD) {
             $this->_log("Zend_Cache_Backend_Memcached::clean() : CLEANING_MODE_OLD is unsupported by the Memcached backend");
         }
-        if ($mode==Zend_Cache::CLEANING_MODE_MATCHING_TAG) {
+        if ($mode == Zend_Cache::CLEANING_MODE_MATCHING_TAG) {
             $this->_log("Zend_Cache_Backend_Memcached::clean() : tags are unsupported by the Memcached backend");
         }
-        if ($mode==Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG) {
+        if ($mode == Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG) {
             $this->_log("Zend_Cache_Backend_Memcached::clean() : tags are unsupported by the Memcached backend");
         }
     }
