@@ -1,0 +1,19 @@
+{
+    "name": "web-monster/dklabcache",
+    "version": "1.0.0",
+    "description": "Dklabcache for composer",
+    "keywords": ["cache"],
+    "authors" : [
+        {
+            "name": "dk",
+            "role": "Author"
+        },
+        {
+            "name": "Dmitry Stepanenko",
+            "role": "Maintainer"
+        }
+    ],
+    "autoload": {
+        "classmap": ["Cache/Backend/", "Zend/", "Zend/Cache/", "Zend/Cache/Backend/"]
+    }
+}
