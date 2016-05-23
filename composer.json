@@ -1,8 +1,8 @@
 {
     "name": "web-monster/dklabcache",
-    "version": "1.0.0",
+    "license": "MIT",
     "description": "Dklabcache for composer",
-    "keywords": ["cache"],
+    "keywords": ["cache", "caching", "system", "file-system", "redis"],
     "authors" : [
         {
             "name": "dk",
