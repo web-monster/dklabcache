@@ -518,6 +518,14 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
                             $result = ($result) && $this->remove($id);
                         }
                         break;
+                   case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
+                        foreach ($tags as $tag) {
+                            if (in_array($tag, $metadatas['tags'])) {
+                                $result = ($result) && $this->remove($id);
+                                break 2;
+                            }
+                        }
+                        break;
                     default:
                         Zend_Cache::throwException('Invalid mode for clean() method');
                         break;
