@@ -65,7 +65,7 @@ class Zend_Cache_Backend
         if (!is_array($options)) {
             Zend_Cache::throwException('Options parameter must be an array');
         }
-        while (list($name, $value) = each($options)) {
+        foreach ($options as $name => $value) {
             $this->setOption($name, $value);
         }
     }
