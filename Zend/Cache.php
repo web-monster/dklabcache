@@ -62,7 +62,6 @@ abstract class Zend_Cache
     const CLEANING_MODE_OLD = 'old';
     const CLEANING_MODE_MATCHING_TAG = 'matchingTag';
     const CLEANING_MODE_NOT_MATCHING_TAG = 'notMatchingTag';
-    const CLEANING_MODE_MATCHING_ANY_TAG = 'MatchingAnyTag';
 
     /**
      * Factory
@@ -71,8 +70,8 @@ abstract class Zend_Cache
      * @param string $backend         backend name
      * @param array  $frontendOptions associative array of options for the corresponding frontend constructor
      * @param array  $backendOptions  associative array of options for the corresponding backend constructor
-     * @throws Zend_Cache_Exception
      * @return Zend_Cache_Frontend
+     * @throws Zend_Cache_Exception
      */
     public static function factory($frontend, $backend, $frontendOptions = [], $backendOptions = [])
     {
@@ -129,7 +128,7 @@ abstract class Zend_Cache
      *
      * Note : for perf reasons, the "load" of Zend/Cache/Exception is dynamic
      *
-     * @param  string $msg Message for the exception
+     * @param string $msg Message for the exception
      * @throws Zend_Cache_Exception
      */
     public static function throwException($msg)
@@ -141,7 +140,7 @@ abstract class Zend_Cache
     /**
      * Normalize frontend and backend names to allow multiple words TitleCased
      *
-     * @param  string $name Name to normalize
+     * @param string $name Name to normalize
      * @return string
      */
     protected static function _normalizeName($name)

@@ -56,16 +56,16 @@ class Zend_Cache_Backend
     /**
      * Constructor
      *
-     * @param  array $options Associative array of options
-     * @throws Zend_Cache_Exception
+     * @param array $options Associative array of options
      * @return void
+     * @throws Zend_Cache_Exception
      */
     public function __construct($options = [])
     {
         if (!is_array($options)) {
             Zend_Cache::throwException('Options parameter must be an array');
         }
-        while (list($name, $value) = each($options)) {
+        foreach ($options as $name => $value) {
             $this->setOption($name, $value);
         }
     }
@@ -73,9 +73,9 @@ class Zend_Cache_Backend
     /**
      * Set the frontend directives
      *
-     * @param  array $directives Assoc of directives
-     * @throws Zend_Cache_Exception
+     * @param array $directives Assoc of directives
      * @return void
+     * @throws Zend_Cache_Exception
      */
     public function setDirectives($directives)
     {
@@ -99,10 +99,10 @@ class Zend_Cache_Backend
     /**
      * Set an option
      *
-     * @param  string $name
-     * @param  mixed  $value
-     * @throws Zend_Cache_Exception
+     * @param string $name
+     * @param mixed  $value
      * @return void
+     * @throws Zend_Cache_Exception
      */
     public function setOption($name, $value)
     {
@@ -122,7 +122,7 @@ class Zend_Cache_Backend
      * if $specificLifetime is not false, the given specific life time is used
      * else, the global lifetime is used
      *
-     * @param  int $specificLifetime
+     * @param int $specificLifetime
      * @return int Cache life time
      */
     public function getLifetime($specificLifetime)
@@ -181,8 +181,8 @@ class Zend_Cache_Backend
      * is available.
      * Create a default log object if none is set.
      *
-     * @throws Zend_Cache_Exception
      * @return void
+     * @throws Zend_Cache_Exception
      */
     protected function _loggerSanity()
     {
@@ -210,9 +210,9 @@ class Zend_Cache_Backend
     /**
      * Log a message at the WARN (4) priority.
      *
-     * @param  string $message
-     * @throws Zend_Cache_Exception
+     * @param string $message
      * @return void
+     * @throws Zend_Cache_Exception
      */
     protected function _log($message, $priority = 4)
     {
