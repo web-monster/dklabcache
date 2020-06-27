@@ -1,5 +1,5 @@
 {
-    "name": "web-monster/dklabcache",
+    "name": "livestreet/dklabcache",
     "license": "MIT",
     "description": "Dklabcache for composer",
     "keywords": ["cache", "caching", "system", "file-system", "redis"],
